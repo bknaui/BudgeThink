@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">BudgeThink</string>
+    <string-array name="expense_type">
+        <item>Food</item>
+        <item>Transport</item>
+        <item>Others</item>
+    </string-array>
+</resources>

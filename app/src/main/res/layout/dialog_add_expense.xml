@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingLeft="13dp"
+        android:paddingTop="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"
+        android:text="ADD EXPENSE"
+        android:textAppearance="?android:textAppearanceMedium"
+        android:textColor="#000"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <EditText
+        android:id="@+id/dialog_expense_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/rectangle_black_stroke"
+        android:hint="Enter description"
+        android:paddingLeft="13dp"
+        android:paddingTop="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"
+        android:textAppearance="?android:textAppearanceSmall"
+        app:layout_constraintTop_toBottomOf="@+id/title" />
+
+    <EditText
+        android:id="@+id/dialog_expense_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/rectangle_black_stroke"
+        android:hint="Enter name"
+        android:paddingLeft="13dp"
+        android:paddingTop="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"
+        android:textAppearance="?android:textAppearanceSmall"
+        app:layout_constraintTop_toBottomOf="@+id/dialog_expense_description" />
+
+    <Spinner
+        android:id="@+id/dialog_expense_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/rectangle_black_stroke"
+        android:entries="@array/expense_type"
+        android:padding="12dp"
+        android:textAppearance="?android:textAppearanceSmall"
+        app:layout_constraintTop_toBottomOf="@+id/dialog_expense_name" />
+
+    <TextView
+        android:id="@+id/dialog_expense_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/rectangle_black_stroke"
+        android:drawableRight="@drawable/ic_calendar"
+        android:hint="Select date"
+        android:paddingLeft="13dp"
+        android:paddingTop="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"
+        android:textAppearance="?android:textAppearanceSmall"
+        app:layout_constraintTop_toBottomOf="@+id/dialog_expense_type" />
+
+    <EditText
+        android:id="@+id/dialog_expense_amount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/rectangle_black_stroke"
+        android:hint="Amount"
+        android:inputType="numberDecimal"
+        android:paddingLeft="13dp"
+        android:paddingTop="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"
+        android:textAppearance="?android:textAppearanceSmall"
+        app:layout_constraintTop_toBottomOf="@+id/dialog_expense_date" />
+
+    <Button
+        android:id="@+id/dialog_expense_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@color/colorAccent"
+        android:text="ADD"
+        android:textColor="#fff"
+        app:layout_constraintTop_toBottomOf="@+id/dialog_expense_amount" />
+
+</android.support.constraint.ConstraintLayout>
