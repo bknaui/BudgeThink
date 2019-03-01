@@ -4,13 +4,15 @@ import android.app.Dialog;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.myapp.apangcatan.spendingdiary.R;
 import com.myapp.apangcatan.spendingdiary.contract.ExpenseContract;
+import com.myapp.apangcatan.spendingdiary.model.BudgetPlanModel;
+import com.myapp.apangcatan.spendingdiary.model.BudgetPlanModelDao;
 import com.myapp.apangcatan.spendingdiary.model.ExpenseModel;
 import com.myapp.apangcatan.spendingdiary.model.ExpenseModelDao;
+import com.myapp.apangcatan.spendingdiary.utility.ValueFormatterUtility;
 
 import java.util.List;
 
@@ -18,14 +20,14 @@ public class ExpensePresenter implements ExpenseContract.ExpensePresenter {
     private ExpenseContract.ExpenseView expenseView;
     private ExpenseModelDao expenseModelDao;
 
-    public ExpensePresenter(ExpenseContract.ExpenseView expenseView, ExpenseModelDao expenseModelDao) {
+    public ExpensePresenter(ExpenseContract.ExpenseView expenseView) {
         this.expenseView = expenseView;
-        this.expenseModelDao = expenseModelDao;
+        this.expenseModelDao = expenseView.getExpenseModelDao();
     }
 
     @Override
-    public void loadExpenses() {
-        List<ExpenseModel> list = expenseModelDao.queryRaw("", null);
+    public void loadExpenses(long budgetPlanID) {
+        List<ExpenseModel> list = expenseModelDao.queryBuilder().where(ExpenseModelDao.Properties.BudgetPlanId.eq(budgetPlanID)).list();
         Log.e("loadExpenses", list.size() + "");
         expenseView.displayExpenses(list);
     }
@@ -40,7 +42,6 @@ public class ExpensePresenter implements ExpenseContract.ExpensePresenter {
     public void deleteExpense(ExpenseModel expenseModel) {
         expenseView.onDeleteSuccess(expenseModel.getItem() + " Deleted");
         expenseModelDao.delete(expenseModel);
-
     }
 
 
@@ -55,13 +56,13 @@ public class ExpensePresenter implements ExpenseContract.ExpensePresenter {
 
         EditText dialogDescription = dialog.findViewById(R.id.dialog_expense_description);
         EditText dialogName = dialog.findViewById(R.id.dialog_expense_name);
-        Spinner dialogType = dialog.findViewById(R.id.dialog_expense_type);
+
         TextView dialogDate = dialog.findViewById(R.id.dialog_expense_date);
         EditText dialogAmount = dialog.findViewById(R.id.dialog_expense_amount);
 
         String stringDescription = dialogDescription.getText().toString();
         String stringName = dialogName.getText().toString();
-        String stringType = dialogType.getSelectedItem().toString();
+
         String stringDate = dialogDate.getText().toString();
         String stringAmount = dialogAmount.getText().toString();
 
@@ -82,11 +83,27 @@ public class ExpensePresenter implements ExpenseContract.ExpensePresenter {
             return;
         }
 
-        ExpenseModel expenseModel = new ExpenseModel(stringDescription, stringName, stringType, stringDate, stringAmount);
+        ExpenseModel expenseModel = new ExpenseModel(null, stringDescription, stringName, stringDate, stringAmount, expenseView.getCurrentBudgetID());
         expenseModelDao.insert(expenseModel);
 
         expenseDialogCallback.onSaveSuccess();
 
+
+    }
+
+    @Override
+    public void getCurrentRemainingBalance(Long budgetPlanId) {
+        double total_expenses = 0;
+        List<ExpenseModel> expenses = expenseModelDao.queryBuilder().where(ExpenseModelDao.Properties.BudgetPlanId.eq(budgetPlanId)).list();
+        for (ExpenseModel data : expenses) {
+            total_expenses += Double.parseDouble(data.getAmount());
+        }
+        BudgetPlanModelDao budgetPlanModelDao = expenseView.getBudgetPlanModelDao();
+        BudgetPlanModel budgetPlanModel = budgetPlanModelDao.queryBuilder().where(BudgetPlanModelDao.Properties.Id.eq(budgetPlanId)).unique();
+
+        double remaining_balance = Double.parseDouble(budgetPlanModel.getAmount()) - total_expenses;
+
+        expenseView.setBalanceStatus("Balance : P"+ValueFormatterUtility.convertToCurrencyFormat(remaining_balance));
 
     }
 

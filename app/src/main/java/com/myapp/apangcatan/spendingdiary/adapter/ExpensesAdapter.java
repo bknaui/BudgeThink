@@ -34,17 +34,7 @@ public class ExpensesAdapter extends RecyclerView.Adapter<ExpensesAdapter.Expens
 
     @Override
     public void onBindViewHolder(@NonNull ExpensesViewHolder holder, int position) {
-        switch (list.get(position).getType()) {
-            case "Food":
-                holder.imgviewType.setImageResource(R.drawable.ic_food);
-                break;
-            case "Transport":
-                holder.imgviewType.setImageResource(R.drawable.ic_transport);
-                break;
-            case "Others":
-                holder.imgviewType.setImageResource(R.drawable.ic_others);
-                break;
-        }
+
         holder.txtviewDescription.setText(list.get(position).getDescription());
         holder.txtviewName.setText(list.get(position).getItem());
         holder.txtviewDate.setText(list.get(position).getDate());

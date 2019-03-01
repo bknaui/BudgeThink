@@ -28,12 +28,15 @@ import com.myapp.apangcatan.spendingdiary.RecyclerSwipeCallback;
 import com.myapp.apangcatan.spendingdiary.adapter.ExpensesAdapter;
 import com.myapp.apangcatan.spendingdiary.contract.ExpenseContract;
 import com.myapp.apangcatan.spendingdiary.contract.SwipeCallBackk;
+import com.myapp.apangcatan.spendingdiary.model.BudgetPlanModel;
+import com.myapp.apangcatan.spendingdiary.model.BudgetPlanModelDao;
 import com.myapp.apangcatan.spendingdiary.model.ExpenseModel;
 import com.myapp.apangcatan.spendingdiary.model.ExpenseModelDao;
 import com.myapp.apangcatan.spendingdiary.presenter.ExpensePresenter;
 import com.myapp.apangcatan.spendingdiary.view.activity.SettingsActivity;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -41,10 +44,15 @@ import java.util.List;
 public class ExpenseFragment extends Fragment implements ExpenseContract.ExpenseView {
     private RecyclerView recyclerView;
     private List<ExpenseModel> list = new ArrayList<>();
+    private TextView balanceStatus;
+
     private ExpensesAdapter expensesAdapter;
     private ExpensePresenter expensePresenter;
     private ExpenseModelDao expenseModelDao;
+    private BudgetPlanModelDao budgetPlanModelDao;
+    private BudgetPlanModel budgetPlanModel;
     private RecyclerSwipeCallback recyclerSwipeCallback;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,14 +70,15 @@ public class ExpenseFragment extends Fragment implements ExpenseContract.Expense
 
         recyclerView = view.findViewById(R.id.recylcerview_expenses);
         recyclerView.setLayoutManager(linearLayoutManager);
-
+        balanceStatus = view.findViewById(R.id.balance_status);
 
         expenseModelDao = ((ExpenseApplication) getContext().getApplicationContext()).getDaoSession().getExpenseModelDao();
+        budgetPlanModelDao = ((ExpenseApplication) getContext().getApplicationContext()).getDaoSession().getBudgetPlanModelDao();
 
         expensesAdapter = new ExpensesAdapter(list, new SwipeCallBackk() {
             @Override
             public void onItemDelete(ExpenseModel expenseModel) {
-               expensePresenter.deleteExpense(expenseModel);
+                expensePresenter.deleteExpense(expenseModel);
             }
         });
 
@@ -79,8 +88,16 @@ public class ExpenseFragment extends Fragment implements ExpenseContract.Expense
         itemTouchHelper.attachToRecyclerView(recyclerView);
         recyclerView.setAdapter(expensesAdapter);
 
-        expensePresenter = new ExpensePresenter(this, expenseModelDao);
-        expensePresenter.loadExpenses();
+        expensePresenter = new ExpensePresenter(this);
+
+        budgetPlanModel = budgetPlanModelDao.queryBuilder().where(BudgetPlanModelDao.Properties.Selected.eq(true)).unique();
+
+        if (budgetPlanModel != null) {
+            expensePresenter.getCurrentRemainingBalance(budgetPlanModel.getId());
+            expensePresenter.loadExpenses(budgetPlanModel.getId());
+        } else {
+            setBalanceStatus("No budget plan selected");
+        }
         return view;
     }
 
@@ -97,7 +114,9 @@ public class ExpenseFragment extends Fragment implements ExpenseContract.Expense
                             @Override
                             public void onClearSuccess(String message) {
                                 Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
-                                expensePresenter.loadExpenses();
+                                if (budgetPlanModel != null) {
+                                    expensePresenter.loadExpenses(budgetPlanModel.getId());
+                                }
                             }
                         });
                     }
@@ -107,7 +126,11 @@ public class ExpenseFragment extends Fragment implements ExpenseContract.Expense
                 dialog.show();
                 return true;
             case R.id.add_expense:
-                addExpense();
+                if (budgetPlanModel != null) {
+                    addExpense();
+                } else {
+                    Toast.makeText(getContext(), "Create Budget Plan first", Toast.LENGTH_SHORT).show();
+                }
                 return true;
             case R.id.menu_settings:
                 Intent intent = new Intent(getContext(), SettingsActivity.class);
@@ -189,8 +212,11 @@ public class ExpenseFragment extends Fragment implements ExpenseContract.Expense
 
                     @Override
                     public void onSaveSuccess() {
-                        Toast.makeText(getContext(), "Successfully Addedd", Toast.LENGTH_SHORT).show();
-                        expensePresenter.loadExpenses();
+                        Toast.makeText(getContext(), "Successfully Added", Toast.LENGTH_SHORT).show();
+                        if (budgetPlanModel != null) {
+                            expensePresenter.getCurrentRemainingBalance(budgetPlanModel.getId());
+                            expensePresenter.loadExpenses(budgetPlanModel.getId());
+                        }
                         dialog.dismiss();
                     }
 
@@ -210,5 +236,25 @@ public class ExpenseFragment extends Fragment implements ExpenseContract.Expense
     @Override
     public void onDeleteSuccess(String message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void setBalanceStatus(String status) {
+        balanceStatus.setText(status);
+    }
+
+    @Override
+    public ExpenseModelDao getExpenseModelDao() {
+        return expenseModelDao;
+    }
+
+    @Override
+    public BudgetPlanModelDao getBudgetPlanModelDao() {
+        return budgetPlanModelDao;
+    }
+
+    @Override
+    public long getCurrentBudgetID() {
+        return budgetPlanModel.getId();
     }
 }

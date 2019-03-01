@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/main_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent">
 
         <include
             layout="@layout/toolbar"
@@ -29,23 +31,100 @@
         <android.support.v7.widget.CardView
             android:id="@+id/cardview_statistic"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_height="200dp"
+            app:cardUseCompatPadding="true"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtview_separator_statistics">
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:padding="2dp">
 
                 <com.github.mikephil.charting.charts.PieChart
                     android:id="@+id/barchart_statistics"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
+                    app:layout_constraintBottom_toTopOf="@+id/barchart_statistics_budget"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/barchart_statistics_guide"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/barchart_statistics_budget"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="Budget: P3,220.00"
+                    android:textAppearance="?android:textAppearanceSmall"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/barchart_statistics_guide"
+                    app:layout_constraintTop_toBottomOf="@+id/barchart_statistics" />
+
+                <TextView
+                    android:id="@+id/barchart_statistics_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="left"
+                    android:padding="2dp"
+                    android:text="Used"
+                    android:textAppearance="?android:textAppearanceLarge"
+                    android:textColor="#f44336"
+                    app:layout_constraintBottom_toTopOf="@+id/barchart_statistics_total_expenses"
+                    app:layout_constraintLeft_toRightOf="@+id/barchart_statistics_guide"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintVertical_chainStyle="spread_inside" />
+
+                <TextView
+                    android:id="@+id/barchart_statistics_total_expenses"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="left"
+                    android:padding="2dp"
+                    android:text="Expenses: P150.00"
+                    android:textAppearance="?android:textAppearanceSmall"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toRightOf="@+id/barchart_statistics_guide"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/barchart_statistics_remaining_balance"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="left"
+                    android:padding="2dp"
+                    android:text="Balance: P10.00"
+                    android:textAppearance="?android:textAppearanceSmall"
+                    app:layout_constraintLeft_toRightOf="@+id/barchart_statistics_guide"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/barchart_statistics_total_expenses" />
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/rectangle_black_stroke"
+                    android:text="DETAIL"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/barchart_statistics_remaining_balance" />
+
+                <android.support.constraint.Guideline
+                    android:id="@+id/barchart_statistics_guide"
+                    android:layout_width="1px"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.5" />
 
             </android.support.constraint.ConstraintLayout>
 
@@ -53,12 +132,30 @@
 
         <TextView
             android:id="@+id/txtview_separator_manage"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="#d7d7d7"
             android:padding="5dp"
             android:text="Manage Budget"
             android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/outer_guide"
+            app:layout_constraintTop_toBottomOf="@+id/cardview_statistic" />
+
+        <TextView
+            android:id="@+id/txtview_edit_budget_plan"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="#d7d7d7"
+            android:gravity="right"
+            android:paddingTop="5dp"
+            android:paddingRight="25dp"
+            android:paddingBottom="5dp"
+            android:text="EDIT"
+            android:textColor="#1e88e5"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toRightOf="@+id/outer_guide"
+            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cardview_statistic" />
 
         <android.support.v7.widget.CardView
@@ -73,40 +170,28 @@
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
                 android:padding="15dp">
 
+
                 <TextView
-                    android:id="@+id/settings_current_budget"
+                    android:id="@+id/settings_current_budget_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3dp"
                     android:layout_marginRight="5dp"
                     android:layout_marginBottom="5dp"
-                    android:drawableRight="@drawable/ic_settings_black"
                     android:gravity="left|center"
                     android:padding="4dp"
-                    android:text="Budget Plan"
+                    android:text="Plan"
                     android:textAppearance="?android:textAppearanceSmall"
                     android:textColor="#212121"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/guidline"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
-                    android:layout_marginBottom="5dp"
-                    android:gravity="left|center"
-                    android:padding="3dp"
-                    android:text="Balance"
-                    android:textAppearance="?android:textAppearanceSmall"
-                    android:textColor="#212121"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@+id/guidline"
-                    app:layout_constraintTop_toBottomOf="@+id/settings_current_budget" />
-
-                <TextView
-                    android:id="@+id/settings_current_remaining"
+                    android:id="@+id/settings_current_budget_value"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
@@ -114,14 +199,77 @@
                     android:layout_marginBottom="5dp"
                     android:gravity="right|center"
                     android:padding="3dp"
-                    android:text="P123,000.00"
+                    android:text=""
                     android:textAppearance="?android:textAppearanceSmall"
                     android:textColor="@color/colorPrimary"
                     android:textStyle="bold|italic"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toRightOf="@+id/guidline"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/settings_current_budget" />
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/settings_current_amount_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginBottom="5dp"
+                    android:gravity="left|center"
+                    android:padding="3dp"
+                    android:text="Amount"
+                    android:textAppearance="?android:textAppearanceSmall"
+                    android:textColor="#212121"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/guidline"
+                    app:layout_constraintTop_toBottomOf="@+id/settings_current_budget_title" />
+
+                <TextView
+                    android:id="@+id/settings_current_amount_value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="3dp"
+                    android:layout_marginBottom="5dp"
+                    android:gravity="right|center"
+                    android:padding="3dp"
+                    android:text=""
+                    android:textAppearance="?android:textAppearanceSmall"
+                    android:textColor="@color/colorPrimary"
+                    android:textStyle="bold|italic"
+                    app:layout_constraintLeft_toRightOf="@+id/guidline"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/settings_current_budget_value" />
+
+                <TextView
+                    android:id="@+id/settings_current_inclusive_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginBottom="5dp"
+                    android:gravity="left|center"
+                    android:padding="3dp"
+                    android:text="Inclusive Date"
+                    android:textAppearance="?android:textAppearanceSmall"
+                    android:textColor="#212121"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/guidline"
+                    app:layout_constraintTop_toBottomOf="@+id/settings_current_amount_title" />
+
+                <TextView
+                    android:id="@+id/settings_current_inclusive_value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="3dp"
+                    android:layout_marginBottom="5dp"
+                    android:gravity="right|center"
+                    android:padding="3dp"
+                    android:text=""
+                    android:textAppearance="?android:textAppearanceSmall"
+                    android:textColor="@color/colorPrimary"
+                    android:textStyle="bold|italic"
+                    app:layout_constraintLeft_toRightOf="@+id/guidline"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/settings_current_amount_value" />
 
                 <android.support.constraint.Guideline
                     android:id="@+id/guidline"
@@ -137,13 +285,33 @@
         </android.support.v7.widget.CardView>
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/txtview_separator"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="#d7d7d7"
             android:padding="5dp"
             android:text="Create Budget"
             android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/outer_guide"
+            app:layout_constraintTop_toBottomOf="@+id/cardview_manage_budget" />
+
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/txtview_add_budget_plan"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="#d7d7d7"
+            android:gravity="right"
+            android:paddingTop="5dp"
+            android:paddingRight="25dp"
+            android:paddingBottom="5dp"
+            android:text="ADD"
+            android:textColor="#1e88e5"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toRightOf="@+id/outer_guide"
+            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cardview_manage_budget" />
 
         <android.support.v7.widget.CardView
@@ -151,7 +319,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="2dp"
-
+            android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtview_separator">
@@ -159,11 +327,11 @@
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
                 android:padding="15dp">
 
-
                 <EditText
-                    android:id="@+id/edtxt_settings_budgetplan"
+                    android:id="@+id/edtxt_settings_budget_plan"
                     android:layout_width="match_parent"
                     android:layout_height="42dp"
                     android:layout_marginTop="5dp"
@@ -171,14 +339,30 @@
                     android:layout_marginBottom="5dp"
                     android:background="@drawable/rectangle_black_stroke"
                     android:hint="Plan"
+                    android:inputType="text"
                     android:padding="10dp"
                     android:textAppearance="?android:textAppearanceSmall"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+                <TextView
+                    android:id="@+id/edtxt_settings_budget_inclusive_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/rectangle_black_stroke"
+                    android:hint="Inclusive Date"
+                    android:padding="10dp"
+                    android:textAppearance="?android:textAppearanceSmall"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/edtxt_settings_budget_plan" />
+
                 <EditText
-                    android:id="@+id/edtxt_settings_budgetamount"
+                    android:id="@+id/edtxt_settings_budget_amount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
@@ -186,13 +370,15 @@
                     android:layout_marginBottom="5dp"
                     android:background="@drawable/rectangle_black_stroke"
                     android:hint="Amount"
+                    android:inputType="numberDecimal"
                     android:padding="10dp"
                     android:textAppearance="?android:textAppearanceSmall"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/edtxt_settings_budgetplan" />
+                    app:layout_constraintTop_toBottomOf="@+id/edtxt_settings_budget_inclusive_date" />
 
                 <Button
+                    android:id="@+id/btn_add_budget_plan"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -203,10 +389,17 @@
                     android:textColor="#fff"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/edtxt_settings_budgetamount" />
+                    app:layout_constraintTop_toBottomOf="@+id/edtxt_settings_budget_amount" />
 
             </android.support.constraint.ConstraintLayout>
         </android.support.v7.widget.CardView>
+
+        <android.support.constraint.Guideline
+            android:id="@+id/outer_guide"
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
 
     </android.support.constraint.ConstraintLayout>
 

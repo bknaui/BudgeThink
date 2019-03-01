@@ -30,21 +30,6 @@ public class StatisticPresenter implements StatisticContract.StatisticPresenter 
         float transportAmount = 0;
         float othersAmount = 0;
 
-        List<ExpenseModel> expenseModels = expenseModelDao.loadAll();
-
-        for (ExpenseModel expenseModel : expenseModels) {
-            switch (expenseModel.getType()) {
-                case "Food":
-                    foodAmount += Double.parseDouble(expenseModel.getAmount());
-                    break;
-                case "Transport":
-                    transportAmount += Double.parseDouble(expenseModel.getAmount());
-                    break;
-                case "Others":
-                    othersAmount += Double.parseDouble(expenseModel.getAmount());
-                    break;
-            }
-        }
 
         List<PieEntry> entries = new ArrayList<>();
         entries.add(new PieEntry(foodAmount, "FOOD"));

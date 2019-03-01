@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.myapp.apangcatan.spendingdiary.model.BudgetPlanModelDao;
 import com.myapp.apangcatan.spendingdiary.model.ExpenseModel;
 import com.myapp.apangcatan.spendingdiary.model.ExpenseModelDao;
 
@@ -20,10 +21,18 @@ public class ExpenseContract {
         void addExpense();
 
         void onDeleteSuccess(String message);
+
+        void setBalanceStatus(String status);
+
+        ExpenseModelDao getExpenseModelDao();
+
+        BudgetPlanModelDao getBudgetPlanModelDao();
+
+        long getCurrentBudgetID();
     }
 
     public interface ExpensePresenter {
-        void loadExpenses();
+        void loadExpenses(long budgetPlanID);
 
         void clearExpenses(ExpenseClearCallback expenseClearCallback);
 
@@ -33,11 +42,14 @@ public class ExpenseContract {
 
         void saveExpenseToLocal(Dialog dialog, ExpenseDialogCallback expenseDialogCallback);
 
+        void getCurrentRemainingBalance(Long budgetPlanId);
+
     }
 
     public interface ExpenseClearCallback {
         void onClearSuccess(String message);
     }
+
 
     public interface ExpenseDialogCallback {
         void setDescriptionRequireMessage(EditText editTextDialogDescription);

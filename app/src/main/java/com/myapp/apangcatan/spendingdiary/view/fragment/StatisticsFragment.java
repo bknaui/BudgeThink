@@ -1,40 +1,21 @@
 package com.myapp.apangcatan.spendingdiary.view.fragment;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
-import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.data.PieEntry;
 import com.myapp.apangcatan.spendingdiary.ExpenseApplication;
 import com.myapp.apangcatan.spendingdiary.R;
-import com.myapp.apangcatan.spendingdiary.adapter.ExpensesAdapter;
 import com.myapp.apangcatan.spendingdiary.contract.StatisticContract;
-import com.myapp.apangcatan.spendingdiary.model.ExpenseModel;
 import com.myapp.apangcatan.spendingdiary.model.ExpenseModelDao;
 import com.myapp.apangcatan.spendingdiary.presenter.StatisticPresenter;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class StatisticsFragment extends Fragment implements StatisticContract.StatisticView {
 
